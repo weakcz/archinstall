@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "Instalační skript arch linuxu"
+echo "============================="
+echo "Tento skript nainstaluje archlinux. Vše je zcela automatické"
+echo "Nejdříve se zeptáme na pár ůdajú"
+echo -e "\n"
+echo "Napište disk na který chcete archlinux nainstalovat. Spustí se utilita na rozdělení disku cfdisk, ve které si vytvoříte oddíly. Pište ve formátu /dev/něco (například /dev/sda)"
+read installdisk
+sudo cfdisk $installdisk
