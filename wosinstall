@@ -36,6 +36,7 @@ mount $partition /mnt
 pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 sed '1,/^#part2$/d' `basename $0` > /mnt/wosinstall2.sh
+cp test.list /mnt/test.list
 chmod +x /mnt/wosinstall2.sh
 arch-chroot /mnt ./wosinstall2.sh
 exit 
@@ -79,7 +80,7 @@ mkdir /boot/efi
 mount $efipartition /boot/efi 
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
-pacman -S alacritty dunst picom qtile xorg firefox networkmanager zsh 
+pacman -S --no-confirm --needed - < test.list
 systemctl enable NetworkManager.service 
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 echo "Zadejte jméno uživatele: "
