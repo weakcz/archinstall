@@ -53,3 +53,6 @@ echo "LC_TIME=cs_CZ.UTF-8" >> /etc/locale.conf
 echo "KEYMAP=cz" > /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
 echo "QT_QPA_PLATFORMTHEME=qt5ct" >> /etc/environment
+echo "Hostname: "
+read hostname
+echo $hostname > /etc/hostname
