@@ -33,13 +33,10 @@ if [[ $aswap = a ]] ; then
   swapon $swappartition  
 fi
 mount $partition /mnt 
-cp /root/archinstall/test.list /mnt
-exit
-
 pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 sed '1,/^#part2$/d' `basename $0` > /mnt/wosinstall2.sh
-
+cp /root/archinstall/test.list /mnt
 chmod +x /mnt/wosinstall2.sh
 arch-chroot /mnt ./wosinstall2.sh
 exit 
