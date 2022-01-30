@@ -86,13 +86,4 @@ echo "Zadejte jméno uživatele: "
 read username
 useradd -m -G wheel -s /bin/zsh $username
 passwd $username
-echo "Předinstalace hotova. Můžete restartovat"
-ai3_path=/home/$username/wosinstall3.sh
-sed '1,/^#part3$/d' wosinstall2.sh > $ai3_path
-chown $username:$username $ai3_path
-chmod +x $ai3_path
-su -c $ai3_path -s /bin/sh $username
-exit 
-
-#part3
-echo "Část 3"
+echo "instalace hotova. Můžete restartovat"
