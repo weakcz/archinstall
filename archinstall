@@ -35,9 +35,9 @@ fi
 mount $partition /mnt 
 pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
-sed '1,/^#part2$/d' `basename $0` > /mnt/archinstall2.sh
-chmod +x /mnt/archinstall2.sh
-arch-chroot /mnt ./archinstall2.sh
+sed '1,/^#part2$/d' `basename $0` > /mnt/arch-install2.sh
+chmod +x /mnt/archi-nstall2.sh
+arch-chroot /mnt ./arch-install2.sh
 exit 
 
 #part2
