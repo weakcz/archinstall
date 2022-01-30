@@ -1,10 +1,36 @@
 #!/bin/sh
+pacman --noconfirm -S terminus-font &>/dev/null
+export LANG=cs_CZ.UTF-8
+setfont ter-v22b
+loadkeys cz
 
-echo "Instalační skript arch linuxu"
-echo "============================="
-echo "Tento skript nainstaluje archlinux. Vše je zcela automatické"
-echo "Nejdříve se zeptáme na pár ůdajú"
-echo -e "\n"
-echo "Napište disk na který chcete archlinux nainstalovat. Spustí se utilita na rozdělení disku cfdisk, ve které si vytvoříte oddíly. Pište ve formátu /dev/něco (například /dev/sda)"
-read installdisk
-sudo cfdisk $installdisk
+echo "### Instalační skript pro Arch linux"
+
+reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist --protocol https --download-timeout 5
+sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
+pacman --noconfirm -Sy archlinux-keyring
+timedatectl set-ntp true
+lsblk
+echo "Vyberte disk na který chcete archlinux nainstalovat: "
+read drive
+cfdisk $drive
+echo "Napište název linuxového oddílu: "
+read partition
+mkfs.ext4 $partition 
+read -p "Vytvořili jste efi oddíl? [a/n]" aefi
+if [[ $aefi = a ]] ; then
+  echo "Vyberte Efi oddíl: "
+  read efipartition
+  mkfs.vfat -F 32 $efipartition
+fi
+read -p "Vytvořili jste swap oddíl? [a/n]" aswap
+if [[ $aswap = a ]] ; then
+  echo "Vyberte swap oddíl: "
+  read swappartition
+  mkswap $swappartition
+  swapon $swappartition  
+fi
+mount $partition /mnt 
+pacstrap /mnt base base-devel linux linux-firmware
+genfstab -U /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
