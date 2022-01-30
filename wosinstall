@@ -1,0 +1,67 @@
+#!/bin/sh
+
+#part1
+pacman --noconfirm -S terminus-font &>/dev/null
+export LANG=cs_CZ.UTF-8
+setfont ter-v22b
+loadkeys cz
+
+echo "### Instalační skript pro Arch linux"
+
+reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist --protocol https --download-timeout 5
+sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
+pacman --noconfirm -Sy archlinux-keyring
+timedatectl set-ntp true
+lsblk
+echo "Vyberte disk na který chcete archlinux nainstalovat: "
+read drive
+cfdisk $drive
+echo "Napište název linuxového oddílu: "
+read partition
+mkfs.ext4 $partition 
+read -p "Vytvořili jste efi oddíl? [a/n]" aefi
+if [[ $aefi = a ]] ; then
+  echo "Vyberte Efi oddíl: "
+  read efipartition
+  mkfs.vfat -F 32 $efipartition
+fi
+read -p "Vytvořili jste swap oddíl? [a/n]" aswap
+if [[ $aswap = a ]] ; then
+  echo "Vyberte swap oddíl: "
+  read swappartition
+  mkswap $swappartition
+  swapon $swappartition  
+fi
+mount $partition /mnt 
+pacstrap /mnt base base-devel linux linux-firmware
+genfstab -U /mnt >> /mnt/etc/fstab
+sed '1,/^#part2$/d' `basename $0` > /mnt/wosinstall2.sh
+chmod +x /mnt/wosinstall2.sh
+arch-chroot /mnt ./wosinstall2.sh
+exit 
+
+#part2
+clear
+arch-chroot /mnt
+pacman -S --noconfirm sed
+sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
+ln -sf /usr/share/zoneinfo/Europe/Prague /etc/localtime
+hwclock --systohc
+echo "cs_CZ.UTF-8 UTF-8" >> /etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+echo "LC_ADDRESS=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_IDENTIFICATION=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_MEASUREMENT=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_MONETARY=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_NAME=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_NUMERIC=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_PAPER=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_TELEPHONE=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_TIME=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "KEYMAP=cz" > /etc/vconsole.conf
+echo "FONT=ter-v22b" >> /etc/vconsole.conf
+echo "QT_QPA_PLATFORMTHEME=qt5ct" >> /etc/environment
+echo "Hostname: "
+read hostname
+echo $hostname > /etc/hostname
