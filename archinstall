@@ -1,4 +1,6 @@
 #!/bin/sh
+
+#part1
 pacman --noconfirm -S terminus-font &>/dev/null
 export LANG=cs_CZ.UTF-8
 setfont ter-v22b
@@ -33,6 +35,13 @@ fi
 mount $partition /mnt 
 pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
+sed '1,/^#part2$/d' `basename $0` > /mnt/archinstall2.sh
+chmod +x /mnt/archinstall2.sh
+arch-chroot /mnt ./archinstall2.sh
+exit 
+
+#part2
+clear
 arch-chroot /mnt
 pacman -S --noconfirm sed
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
