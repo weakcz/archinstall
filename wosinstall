@@ -8,7 +8,7 @@ loadkeys cz
 
 echo "### Instalační skript pro Arch linux"
 
-reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist --protocol https --download-timeout 5
+reflector -c Czechia --latest 20 --sort rate --save /etc/pacman.d/mirrorlist 
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 pacman --noconfirm -Sy archlinux-keyring
 timedatectl set-ntp true

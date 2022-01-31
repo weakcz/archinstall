@@ -1,9 +1,10 @@
-alacritty 
-dunst 
-picom 
+alacritty
+dunst
+picom
 qtile
-xorg 
-firefox 
-networkmanager 
+xorg
+firefox
+networkmanager
 zsh
 sddm
+terminus-font
