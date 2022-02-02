@@ -38,19 +38,12 @@ read -p "Jméno: " user_name
 read -s -p "Heslo: " user_password
 echo "user_name="$user_name >> wosinstall.conf
 echo "user_password="$user_password >>wosinstall.conf
-
-exit
-
 pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 cp /root/archinstall/test.list /mnt
 cp /root/archinstall/wosinstall.conf /mnt
 chmod +x /mnt/wosinstall2.sh
-
-exit
-
 sed '1,/^#part2$/d' `basename $0` > /mnt/wosinstall2.sh
-
 arch-chroot /mnt ./wosinstall2.sh
 exit 
 
