@@ -54,8 +54,7 @@ exit
 
 #part2
 clear
-arch-chroot /mnt
-source /wosinistall.config
+source /wosinistall.conf
 echo $user_name
 echo $user_password
 exit
