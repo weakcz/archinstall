@@ -38,6 +38,8 @@ read -p "Jméno: " user_name
 read -s -p "Heslo: " user_password
 echo "user_name="$user_name >> wosinstall.conf
 echo "user_password="$user_password >>wosinstall.conf
+
+mount $partition /mnt
 pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 cp /root/archinstall/test.list /mnt
@@ -50,6 +52,10 @@ exit
 #part2
 clear
 arch-chroot /mnt
+source wosinistall.config
+echo $user_name
+echo $user_password
+exit
 pacman -S --noconfirm sed
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 ln -sf /usr/share/zoneinfo/Europe/Prague /etc/localtime
