@@ -35,10 +35,12 @@ if [[ $aswap = a ]] ; then
 fi
 echo "Vytvořte uživatele"
 read -p "Jméno: " user_name
-read -p -s "Heslo: " user_password
+read -s -p "Heslo: " user_password
 echo "user_name="$user_name >> wosinstall.conf
 echo "user_password="$user_password >>wosinstall.conf
-mount $partition /mnt 
+
+exit
+
 pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 cp /root/archinstall/test.list /mnt
