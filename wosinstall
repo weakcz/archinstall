@@ -13,7 +13,7 @@ sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 pacman --noconfirm -Sy archlinux-keyring
 timedatectl set-ntp true
 lsblk
-echo "Vyberte disk na který chcete archlinux nainstalovat: "
+echo "Vyberte disk na který chcete archlinux nainstalovat (Zadávejte ve formátu /dev/sdX kde X je číslo disku): "
 read drive
 cfdisk $drive
 echo "Napište název linuxového oddílu: "
@@ -24,6 +24,7 @@ if [[ $aefi = a ]] ; then
   echo "Vyberte Efi oddíl: "
   read efipartition
   mkfs.vfat -F 32 $efipartition
+  echo "efi="$efipartition > wosinstall.conf
 fi
 read -p "Vytvořili jste swap oddíl? [a/n]" aswap
 if [[ $aswap = a ]] ; then
@@ -32,11 +33,19 @@ if [[ $aswap = a ]] ; then
   mkswap $swappartition
   swapon $swappartition  
 fi
+echo "Vytvořte uživatele"
+read -p "Jméno: " $user_name
+read -p -s "Heslo: " $user_password
+echo "user_name="$user_name >> wosinstall.conf
+echo "user_password="$user_password >>wosinstall.conf
 mount $partition /mnt 
 pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
+exit
+
 sed '1,/^#part2$/d' `basename $0` > /mnt/wosinstall2.sh
 cp /root/archinstall/test.list /mnt
+cp /root/archinstall/wosinstall.conf /mnt
 chmod +x /mnt/wosinstall2.sh
 arch-chroot /mnt ./wosinstall2.sh
 exit 
