@@ -54,7 +54,7 @@ exit
 
 #part2
 clear
-source wosinistall.config
+source /wosinistall.config
 echo $user_name
 echo $user_password
 exit
