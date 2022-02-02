@@ -5,7 +5,7 @@ pacman --noconfirm -S terminus-font &>/dev/null
 export LANG=cs_CZ.UTF-8
 setfont ter-v22b
 loadkeys cz
-
+clear
 echo "### Instalační skript pro Arch linux"
 
 reflector -c Czechia --latest 20 --sort rate --save /etc/pacman.d/mirrorlist 
@@ -16,6 +16,8 @@ lsblk
 echo "Vyberte disk na který chcete archlinux nainstalovat (Zadávejte ve formátu /dev/sdX kde X je číslo disku): "
 read drive
 cfdisk $drive
+clear
+lsblk
 echo "Napište název linuxového oddílu: "
 read partition
 mkfs.ext4 $partition 
@@ -44,14 +46,14 @@ pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 cp /root/archinstall/test.list /mnt
 cp /root/archinstall/wosinstall.conf /mnt
-chmod +x /mnt/wosinstall2.sh
+
 sed '1,/^#part2$/d' `basename $0` > /mnt/wosinstall2.sh
+chmod +x /mnt/wosinstall2.sh
 arch-chroot /mnt ./wosinstall2.sh
 exit 
 
 #part2
 clear
-arch-chroot /mnt
 source wosinistall.config
 echo $user_name
 echo $user_password
