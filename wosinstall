@@ -55,8 +55,6 @@ exit
 #part2
 clear
 source ./wosinstall.conf
-echo $user_name
-echo $user_password
 exit
 pacman -S --noconfirm sed
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
@@ -84,21 +82,14 @@ echo "127.0.0.1       localhost" >> /etc/hosts
 echo "::1             localhost" >> /etc/hosts
 echo "127.0.1.1       $hostname.localdomain $hostname" >> /etc/hosts
 mkinitcpio -P
-echo "Zadejte root heslo:"
-passwd
 pacman --noconfirm -S grub efibootmgr os-prober
-lsblk
-echo "Enter EFI partition: " 
-read efipartition
-mkdir /boot/efi
-mount $efipartition /boot/efi 
+mount $efi /boot/efi 
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 pacman -S --noconfirm --needed - < test.list
 systemctl enable NetworkManager.service 
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-echo "Zadejte jméno uživatele: "
-read username
-useradd -m -G wheel -s /bin/zsh $username
-passwd $username
+useradd -m -G wheel -s /bin/zsh $user_name
+echo "$user_name:$user_password" | chpasswd
+echo "root:$user_password" | chpasswd
 echo "instalace hotova. Můžete restartovat"
