@@ -54,7 +54,6 @@ arch-chroot /mnt ./wosinstall2.sh
 #part2
 
 source ./wosinstall.conf
-exit
 pacman -S --noconfirm sed
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 ln -sf /usr/share/zoneinfo/Europe/Prague /etc/localtime
