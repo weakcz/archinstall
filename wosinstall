@@ -39,7 +39,7 @@ echo "Vytvořte uživatele"
 read -p "Jméno: " user_name
 read -s -p "Heslo: " user_password
 echo "user_name="$user_name >> wosinstall.conf
-echo "user_password="$user_password >>wosinstall.conf
+echo "user_password="$user_password >> wosinstall.conf
 
 mount $partition /mnt
 pacstrap /mnt base base-devel linux linux-firmware
@@ -50,10 +50,9 @@ cp /root/archinstall/wosinstall.conf /mnt
 sed '1,/^#part2$/d' `basename $0` > /mnt/wosinstall2.sh
 chmod +x /mnt/wosinstall2.sh
 arch-chroot /mnt ./wosinstall2.sh
-exit 
 
 #part2
-clear
+
 source ./wosinstall.conf
 exit
 pacman -S --noconfirm sed
