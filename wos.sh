@@ -82,10 +82,6 @@ useradd -m -G wheel -s /bin/zsh $user_name
 # passwd $username
 echo "$user_name:$user_password" | chpasswd
 echo "root:$user_password" | chpasswd
-
-ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
-ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
-
 cp /wos/dotfiles/.zshrc /home/$user_name/.zshrc
 chown $user_name:$user_name /home/$user_name/.zshrc
 
@@ -104,6 +100,7 @@ cd ${HOME}/yay
 makepkg -si --noconfirm
 cd ..
 yay -S --noconfirm oh-my-zsh-git
-
+sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
+sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
 printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"
 exit
