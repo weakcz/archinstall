@@ -86,7 +86,7 @@ echo "root:$user_password" | chpasswd
 ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
 ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
 
-cp /wos/.zshrc /home/$user_name/
+cp /wos/dotfiles/.zshrc /home/$user_name/.zshrc
 
 ai3_path=/home/$user_name/arch_install3.sh
 sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
