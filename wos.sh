@@ -97,5 +97,9 @@ exit
 
 #part3
 printf '\033c'
+git clone "https://aur.archlinux.org/yay.git"
+cd ${HOME}/yay
+makepkg -si --noconfirm
+cd ..
 printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"
 exit
