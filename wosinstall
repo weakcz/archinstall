@@ -4,10 +4,9 @@
 pacman --noconfirm -S terminus-font &>/dev/null
 export LANG=cs_CZ.UTF-8
 setfont ter-v22b
-loadkeys cz
+loadkeys cz-qwertz
 clear
 echo "### Instalační skript pro Arch linux"
-
 reflector -c Czechia --latest 20 --sort rate --save /etc/pacman.d/mirrorlist 
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 pacman --noconfirm -Sy archlinux-keyring
@@ -40,19 +39,19 @@ read -p "Jméno: " user_name
 read -s -p "Heslo: " user_password
 echo "user_name="$user_name >> wosinstall.conf
 echo "user_password="$user_password >> wosinstall.conf
-
+echo "Jméno počítače (zadávejte malými písmeny): "
+read hostname
+echo "hostname="$hostname >> wosinstall.conf
 mount $partition /mnt
 pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 cp /root/archinstall/test.list /mnt
 cp /root/archinstall/wosinstall.conf /mnt
-
 sed '1,/^#part2$/d' `basename $0` > /mnt/wosinstall2.sh
 chmod +x /mnt/wosinstall2.sh
 arch-chroot /mnt ./wosinstall2.sh
 
 #part2
-
 source ./wosinstall.conf
 pacman -S --noconfirm sed
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
@@ -70,11 +69,10 @@ echo "LC_NUMERIC=cs_CZ.UTF-8" >> /etc/locale.conf
 echo "LC_PAPER=cs_CZ.UTF-8" >> /etc/locale.conf
 echo "LC_TELEPHONE=cs_CZ.UTF-8" >> /etc/locale.conf
 echo "LC_TIME=cs_CZ.UTF-8" >> /etc/locale.conf
-echo "KEYMAP=cz" > /etc/vconsole.conf
+echo "KEYMAP=cz-qwertz" > /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
 echo "QT_QPA_PLATFORMTHEME=qt5ct" >> /etc/environment
-echo "Hostname: "
-read hostname
+
 echo $hostname > /etc/hostname
 echo "127.0.0.1       localhost" >> /etc/hosts
 echo "::1             localhost" >> /etc/hosts
@@ -92,3 +90,4 @@ useradd -m -G wheel -s /bin/zsh $user_name
 echo "$user_name:$user_password" | chpasswd
 echo "root:$user_password" | chpasswd
 echo "instalace hotova. Můžete restartovat"
+exit
