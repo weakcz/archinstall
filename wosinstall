@@ -95,4 +95,11 @@ useradd -m -G wheel -s /bin/zsh $user_name
 echo "$user_name:$user_password" | chpasswd
 echo "root:$user_password" | chpasswd
 echo "instalace hotova. Můžete restartovat"
-exit
+i3_path=/home/$user_name/wosinstall3.sh
+sed '1,/^#part3$/d' wosinstall2.sh > $ai3_path
+chown $user_name:$user_name $ai3_path
+chmod +x $ai3_path
+su -c $ai3_path -s /bin/sh $user_name
+
+#part3
+echo "ahoj lidi"
