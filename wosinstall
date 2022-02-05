@@ -88,7 +88,7 @@ mkdir /boot/efi
 mount $efi /boot/efi 
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
-pacman -S --noconfirm --needed - < test.list
+# pacman -S --noconfirm --needed - < test.list
 systemctl enable NetworkManager.service 
 sed -i 's/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
 useradd -m -G wheel -s /bin/zsh $user_name
