@@ -1,6 +1,7 @@
 #!/bin/sh
 
 #part1
+printf '\033c'
 pacman --noconfirm -S terminus-font &>/dev/null
 export LANG=cs_CZ.UTF-8
 setfont ter-v22b
@@ -53,7 +54,7 @@ chmod +x /mnt/wosinstall2.sh
 arch-chroot /mnt ./wosinstall2.sh
 
 #part2
-clear
+printf '\033c'
 #source ./wosinstall.conf
 hostname=weakos
 efi=/dev/sda1
@@ -96,9 +97,7 @@ useradd -m -G wheel -s /bin/zsh $user_name
 echo "$user_name:$user_password" | chpasswd
 echo "root:$user_password" | chpasswd
 echo "instalace hotova. Můžete restartovat"
-exit
-exit
-exit
+
 
 #i3_path=/home/$user_name/wosinstall3.sh
 #sed '1,/^#part3$/d' wosinstall2.sh > $ai3_path
