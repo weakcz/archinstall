@@ -103,5 +103,7 @@ git clone "https://aur.archlinux.org/yay.git"
 cd ${HOME}/yay
 makepkg -si --noconfirm
 cd ..
+yay -S --noconfirm oh-my-zsh-git
+
 printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"
 exit
