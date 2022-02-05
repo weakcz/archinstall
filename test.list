@@ -6,6 +6,8 @@ xorg
 firefox
 networkmanager
 zsh
+zsh-autosuggestions
+zsh-syntax-highlighting
 sddm
 terminus-font
 micro

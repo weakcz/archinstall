@@ -11,12 +11,12 @@ lsblk
 echo "Zadejte disk: "
 read drive
 cfdisk $drive 
-echo "Oddíl, kam chcete nainstalovat linux: "
+echo "Napište oddíl, kam chcete nainstalovat linux: "
 read partition
 mkfs.ext4 $partition 
 read -p "Vytvořili jste efi oddíl? [a/n]" answer
 if [[ $answer = a ]] ; then
-  echo "napište EFI oddíl: "
+  echo "Napište EFI oddíl: "
   read efipartition
   mkfs.vfat -F 32 $efipartition
   echo "efi="$efipartition > wosinstall.conf
@@ -37,6 +37,7 @@ sed '1,/^#part2$/d' `basename $0` > /mnt/arch_install2.sh
 chmod +x /mnt/arch_install2.sh
 cp /root/archinstall/test.list /mnt
 cp /root/archinstall/wosinstall.conf /mnt
+cp -r /root/archinstall/wos /mnt/wos
 arch-chroot /mnt ./arch_install2.sh
 exit 
 
@@ -81,15 +82,20 @@ useradd -m -G wheel -s /bin/zsh $user_name
 # passwd $username
 echo "$user_name:$user_password" | chpasswd
 echo "root:$user_password" | chpasswd
-echo "Pre-Installation Finish Reboot now"
-ai3_path=/home/$username/arch_install3.sh
+
+ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
+ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
+
+cp /wos/.zshrc /home/$user_name/
+
+ai3_path=/home/$user_name/arch_install3.sh
 sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
-chown $username:$username $ai3_path
+chown $user_name:$user_name $ai3_path
 chmod +x $ai3_path
 su -c $ai3_path -s /bin/sh $username
 exit 
 
 #part3
 printf '\033c'
-
+printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"
 exit
