@@ -87,12 +87,13 @@ ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom
 ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
 
 cp /wos/dotfiles/.zshrc /home/$user_name/.zshrc
+chown $user_name:$user_name /home/$user_name/.zshrc
 
 ai3_path=/home/$user_name/arch_install3.sh
 sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
 chown $user_name:$user_name $ai3_path
 chmod +x $ai3_path
-su -c $ai3_path -s /bin/sh $username
+su -c $ai3_path -s /bin/sh $user_name
 exit 
 
 #part3
