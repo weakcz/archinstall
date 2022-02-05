@@ -35,6 +35,7 @@ pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 sed '1,/^#part2$/d' `basename $0` > /mnt/arch_install2.sh
 chmod +x /mnt/arch_install2.sh
+cp /root/archinstall/test.list /mnt
 cp /root/archinstall/wosinstall.conf /mnt
 arch-chroot /mnt ./arch_install2.sh
 exit 
@@ -50,8 +51,8 @@ echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "KEYMAP=us" > /etc/vconsole.conf
-echo "Jméno počítače: "
-read hostname
+#echo "Jméno počítače: "
+#read hostname
 echo $hostname > /etc/hostname
 echo "127.0.0.1       localhost" >> /etc/hosts
 echo "::1             localhost" >> /etc/hosts
@@ -68,16 +69,7 @@ sed -i 's/quiet/pci=noaer/g' /etc/default/grub
 sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
-pacman -S --noconfirm xorg-server xorg-xinit xorg-xkill xorg-xsetroot xorg-xbacklight xorg-xprop \
-     noto-fonts noto-fonts-emoji noto-fonts-cjk ttf-jetbrains-mono ttf-joypixels ttf-font-awesome \
-     sxiv mpv zathura zathura-pdf-mupdf ffmpeg imagemagick  \
-     fzf man-db xwallpaper python-pywal youtube-dl unclutter xclip maim \
-     zip unzip unrar p7zip xdotool papirus-icon-theme brightnessctl  \
-     dosfstools ntfs-3g git sxhkd zsh pipewire pipewire-pulse \
-     vim emacs arc-gtk-theme rsync firefox dash \
-     xcompmgr libnotify dunst slock jq \
-     dhcpcd networkmanager rsync pamixer \
-     zsh-syntax-highlighting xdg-user-dirs
+pacman -S --noconfirm --needed - < test.list
 
 systemctl enable NetworkManager.service 
 rm /bin/sh
@@ -99,25 +91,5 @@ exit
 
 #part3
 printf '\033c'
-cd $HOME
-git clone --separate-git-dir=$HOME/.dotfiles https://github.com/bugswriter/dotfiles.git tmpdotfiles
-rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/
-rm -r tmpdotfiles
-git clone --depth=1 https://github.com/Bugswriter/dwm.git ~/.local/src/dwm
-sudo make -C ~/.local/src/dwm install
-git clone --depth=1 https://github.com/Bugswriter/st.git ~/.local/src/st
-sudo make -C ~/.local/src/st install
-git clone --depth=1 https://github.com/Bugswriter/dmenu.git ~/.local/src/dmenu
-sudo make -C ~/.local/src/dmenu install
-git clone --depth=1 https://github.com/Bugswriter/baph.git ~/.local/src/baph
-sudo make -C ~/.local/src/baph install
-baph -inN libxft-bgra-git
 
-ln -s ~/.config/x11/xinitrc .xinitrc
-ln -s ~/.config/shell/profile .zprofile
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-mv ~/.oh-my-zsh ~/.config/zsh/oh-my-zsh
-rm ~/.zshrc ~/.zsh_history
-alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-dots config --local status.showUntrackedFiles no
 exit
