@@ -19,6 +19,7 @@ if [[ $answer = a ]] ; then
   echo "napište EFI oddíl: "
   read efipartition
   mkfs.vfat -F 32 $efipartition
+  echo "efi="$efipartition > wosinstall.conf
 fi
 echo "Vytvořte uživatele"
 read -p "Jméno: " user_name
@@ -58,8 +59,8 @@ echo "127.0.1.1       $hostname.localdomain $hostname" >> /etc/hosts
 mkinitcpio -P
 # passwd
 pacman --noconfirm -S grub efibootmgr os-prober
-echo "Napište EFI oddíl: " 
-read efipartition
+#echo "Napište EFI oddíl: " 
+#read efipartition
 mkdir /boot/efi
 mount $efi /boot/efi 
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
