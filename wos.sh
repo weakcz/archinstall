@@ -12,20 +12,20 @@ pacman --noconfirm -Sy archlinux-keyring
 loadkeys us
 timedatectl set-ntp true
 clear
-lsblk -d
+lsblk -I 8 -d
 printf "\n"
 echo "Zadejte disk [ve formátu /dev/sdX (X je písmeno nebo čísdlo disku)]: "
 read drive
 cfdisk $drive
 clear
-lsblk
+lsblk $drive
 printf "\n"
-read -p "Vytvořili jste efi oddíl? [a/n]" answer
+read -p "Vytvořili jste efi oddíl? [a/n]: " answer
 if [[ $answer = a ]] ; then
-  echo "Napište EFI oddíl: "
+  echo "Napište EFI oddíl (ve formátu /dev/sdXX): "
   read efipartition
 fi
-echo "Napište oddíl, kam chcete nainstalovat linux: "
+echo "Napište oddíl, kam chcete nainstalovat linux (ve formátu /dev/sdXX): "
 read partition
 printf "\nVytvořte uživatele\n"
 read -p "Jméno: " user_name
@@ -33,7 +33,7 @@ read -s -p "Heslo: " user_password
 printf "\n"
 echo "user_name="$user_name > wosinstall.conf
 echo "user_password="$user_password >> wosinstall.conf
-echo "\nJméno počítače (zadávejte malými písmeny): "
+printf "\nJméno počítače (zadávejte malými písmeny): "
 read hostname
 echo "hostname="$hostname >> wosinstall.conf
 
@@ -115,7 +115,7 @@ chown -R $user_name:$user_name /home/$user_name
 
 # Nastavíme Klávesnici na českou
 localectl set-x11-keymap cz
-localectl set-keymap cz
+#localectl set-keymap cz
 
 echo "KEYMAP=cz-qwertz" > /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
@@ -143,7 +143,9 @@ git clone "https://aur.archlinux.org/yay.git"
 cd ${HOME}/yay
 makepkg -si --noconfirm
 cd ..
-yay -S --noconfirm oh-my-zsh-git
+
+yay -S --noconfirm oh-my-zsh-git qt5-styleplugins
+
 sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
 sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
 printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"

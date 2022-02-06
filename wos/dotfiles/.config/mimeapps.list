@@ -1,0 +1,26 @@
+[Default Applications]
+image/png=viewnior.desktop
+text/plain=code-oss.desktop
+application/pdf=xreader.desktop
+image/jpeg=viewnior.desktop
+x-scheme-handler/discord-712465656758665259=discord-712465656758665259.desktop
+video/x-matroska=vlc.desktop
+text/html=firefox.desktop
+application/xhtml+xml=firefox.desktop
+video/mp4=vlc.desktop
+audio/x-wav=deadbeef.desktop
+application/vnd.rar=org.gnome.FileRoller.desktop
+application/x-wine-extension-ini=code-oss.desktop
+
+[Added Associations]
+image/png=viewnior.desktop;
+text/plain=code-oss.desktop;
+application/pdf=xreader.desktop;
+image/jpeg=viewnior.desktop;
+video/x-matroska=vlc.desktop;
+text/html=firefox.desktop;
+application/xhtml+xml=firefox.desktop;
+video/mp4=vlc.desktop;
+audio/x-wav=deadbeef.desktop;
+application/vnd.rar=org.gnome.FileRoller.desktop;
+application/x-wine-extension-ini=code-oss.desktop;
