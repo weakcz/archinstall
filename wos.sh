@@ -46,12 +46,23 @@ printf '\033c'
 source ./wosinstall.conf
 pacman -S --noconfirm sed
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
-ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+ln -sf /usr/share/zoneinfo/Europe/Prague /etc/localtime
 hwclock --systohc
-echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+echo "cs_CZ.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
-echo "LANG=en_US.UTF-8" > /etc/locale.conf
-echo "KEYMAP=us" > /etc/vconsole.conf
+echo "LANG=cs_CZ.UTF-8" > /etc/locale.conf
+echo "LC_ADDRESS=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_IDENTIFICATION=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_MEASUREMENT=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_MONETARY=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_NAME=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_NUMERIC=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_PAPER=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_TELEPHONE=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "LC_TIME=cs_CZ.UTF-8" >> /etc/locale.conf
+echo "KEYMAP=cz-qwertz" > /etc/vconsole.conf
+echo "FONT=ter-v22b" >> /etc/vconsole.conf
+echo "QT_QPA_PLATFORMTHEME=qt5ct" >> /etc/environment
 #echo "Jméno počítače: "
 #read hostname
 echo $hostname > /etc/hostname
