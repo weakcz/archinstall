@@ -12,7 +12,7 @@ pacman --noconfirm -Sy archlinux-keyring
 loadkeys us
 timedatectl set-ntp true
 clear
-lsblk
+lsblk -d
 printf "\n"
 echo "Zadejte disk [ve formátu /dev/sdX (X je písmeno nebo čísdlo disku)]: "
 read drive
@@ -111,7 +111,8 @@ echo "$user_name:$user_password" | chpasswd
 echo "root:$user_password" | chpasswd
 cp -a /wos/dotfiles/. /home/$user_name/
 # chown $user_name:$user_name /home/$user_name/.zshrc
-chown -R weak:weak /home/weak
+chown -R $user_name:$user_name /home/$user_name
+
 # Nastavíme Klávesnici na českou
 localectl set-x11-keymap cz
 localectl set-keymap cz
@@ -125,6 +126,7 @@ echo -e "\nRozbaluji iklony do /usr/share/icons. Tohle může chvíli trvat, mě
 sudo tar -xf /wos/themes/nordarcicons.tar.gz -C /usr/share/icons/
 echo -e "\nRozbaluji kurzor do /usr/share/icons. Tohle může chvíli trvat, mějte strpení\n"
 sudo tar -xf /wos/themes/cursor.tar.gz -C /usr/share/icons/
+mkdir -p /usr/share/wos/backgrounds
 cp -r /wos/backgrounds/* /usr/share/wos/backgrounds
 ai3_path=/home/$user_name/arch_install3.sh
 sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
