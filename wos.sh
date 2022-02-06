@@ -115,7 +115,7 @@ exit
 
 #part3
 printf '\033c'
-sudo chown -R $user_name:$user_name /home/$user_name/
+sudo chown -R weak:weak /home/weak
 cd ~
 git clone "https://aur.archlinux.org/yay.git"
 cd ${HOME}/yay
