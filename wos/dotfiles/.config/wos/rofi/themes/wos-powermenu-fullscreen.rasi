@@ -1,0 +1,105 @@
+/* 
+                     _     ___  ____  
+ __      _____  __ _| | __/ _ \/ ___| 
+ \ \ /\ / / _ \/ _` | |/ / | | \___ \ 
+  \ V  V /  __/ (_| |   <| |_| |___) |
+   \_/\_/ \___|\__,_|_|\_\\___/|____/ 
+                                      
+     Theme for fullscreen powermenu
+            Author: weakCZ
+
+ */
+
+@import "colors/nord.rasi"
+
+* {
+    spacing:    2;
+    border-color: @bordercolor;
+    background-color: transparent;
+	text-color: @foreground;
+	lines: 5;
+	width: 100%;
+    height: 100%;
+	font: "Cantarell 24";
+}
+#window {
+    border:     0px;
+    padding:    0;
+    background-color: @backgroundtransparent;
+	margin: 0px 0px 0px 0px;
+}
+#mainbox {
+    border:  0;
+    padding: 400px 850px 0px 780px;
+    background-color: @backgroundtransparent;
+}
+#message {
+    border:  1px dash 0px 0px ;
+    padding: 0px 0px 0px ;
+    border-color: @separatorcolor;
+}
+#textbox {
+    text-color: @foreground;
+}
+#listview {
+    fixed-height: 0;
+}
+#element {
+    border: 0;
+	padding: 10px;
+}
+#element normal.normal {
+    text-color: @normal-foreground;
+   // background-color: @normal-background;
+}
+#element normal.urgent {
+    text-color: @urgent-foreground;
+    background-color: @urgent-background;
+}
+#element normal.active {
+    text-color: @active-foreground;
+   // background-color: @active-background;
+}
+#element selected.normal {
+    text-color: @selected-normal-foreground;
+    background-color: @selected-normal-background;
+}
+#element selected.urgent {
+    text-color: @selected-urgent-foreground;
+    background-color: @selected-urgent-background;
+}
+#element selected.active {
+    text-color: @selected-active-foreground;
+    background-color: @selected-active-background;
+}
+#element alternate.normal {
+    text-color: @alternate-normal-foreground;
+    background-color: @alternate-normal-background;
+}
+#element alternate.urgent {
+    text-color: @alternate-urgent-foreground;
+    background-color: @alternate-urgent-background;
+}
+#element alternate.active {
+    text-color: @alternate-active-foreground;
+    background-color: @alternate-active-background;
+}
+#scrollbar {
+    border:  0;
+    width: 4px;
+    padding: 0;
+    handle-color: @normal-foreground;
+}
+#sidebar {
+    border:       2px dash 0px 0px ;
+    border-color: @separatorcolor;
+}
+#button selected {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
+#inputbar, case-indicator, entry, prompt, button {
+    enabled: false;
+	spacing: 0;
+    text-color:      @normal-foreground;
+}

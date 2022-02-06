@@ -1,0 +1,81 @@
+
+* {
+    width: 30%;
+    bg: #2e3440;
+    fg: #C1C1C1;
+    fg-alt: #FFFFFF;
+    bg-alt: #5E81AC;
+    font: "Cantarel 13";
+    border: 0;
+    margin: 0;
+    padding: 0;
+    spacing: 0;
+    background-color: @bg;
+}
+ #window {
+    background-color: @bg;
+    border-color: @bg-alt;
+    border:           2;
+    padding:          5;
+}
+#mainbox {
+    border:  0;
+    padding: 0;
+}
+#inputbar {
+    spacing:    0;
+    text-color: @normal-foreground;
+    padding:    1px ;
+    // children: [ prompt, textbox-prompt-colon, entry, case-indicator ];
+}
+#case-indicator {
+    spacing:    0;
+    text-color: @normal-foreground;
+}
+#textbox {
+    text-color: @fg;
+}
+#textbox-prompt-colon {
+    expand:     false;
+    str:        ":";
+    margin:     0px 0.3em 0em 0em ;
+    text-color: @fg;
+}
+#entry {
+    spacing:    0;
+    text-color: @fg;
+}
+prompt {
+    spacing:    0;
+    text-color: @fg;
+    padding: 0 10 0 0;
+ 
+}
+
+listview {
+    fixed-height: 0;
+    scrollbar:    false;
+    padding:      15 0 0 0 ;
+}
+element {
+    border:  0;
+    padding: 5px;
+}
+element-icon { 
+    size: 20px;
+    background-color: transparent;
+    padding: 0 8 0 0;
+}
+element-text {
+    background-color: inherit;
+    text-color:       inherit;
+}
+element.normal {
+    background-color: @bg;
+    text-color:       @fg;
+}
+
+element.selected {
+    background-color: @bg-alt;
+    text-color:       @fg-alt;
+}

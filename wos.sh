@@ -82,7 +82,8 @@ useradd -m -G wheel -s /bin/zsh $user_name
 # passwd $username
 echo "$user_name:$user_password" | chpasswd
 echo "root:$user_password" | chpasswd
-cp /wos/dotfiles/.zshrc /home/$user_name/.zshrc
+xdg-user-dirs-update
+cp -a /wos/dotfiles/. /home/$user_name/
 chown $user_name:$user_name /home/$user_name/.zshrc
 
 ai3_path=/home/$user_name/arch_install3.sh

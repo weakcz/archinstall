@@ -1,0 +1,51 @@
+#!/bin/sh
+#                       _     ___  ____                       
+#   __      _____  __ _| | __/ _ \/ ___|                      
+#   \ \ /\ / / _ \/ _` | |/ / | | \___ \                      
+#    \ V  V /  __/ (_| |   <| |_| |___) |                     
+#     \_/\_/ \___|\__,_|_|\_\\___/|____/                  
+#                                                         
+# Skript na pořízení snínku obrazovky
+#                                                             
+# potřebné závislosti:                                        
+#   notify-send
+#   scrot                                           
+#                                             
+
+# Formát času
+format="+%d-%m-%y_%H-%M-%S"
+# cesta, kam se uloží snímek obrazovky
+cesta="~/Obrázky/Screenshots/"
+
+# Název snímku obrazovky
+nazev="-Snímek_Obrazovky.png"
+
+# Sestavíme název souboru
+soubor=$(date $format)$nazev
+
+#Kompletní cesta ke snímku
+cesta_soubor=$cesta$soubor
+
+# Uděláme snímek obrazovky
+
+# Pokud zavoláme soubor s parametrem -f (fullscreen) nebo bez jakéhokoli parametru,
+# tak uděláme snímek celé obrazovky
+if [ "$1" == "-f" ] || [ "$1" == "" ]; then
+    scrot $soubor -e 'mv $f '$cesta''
+    # odešleme notifikaci
+    notify-send t 2500 -i $cesta_soubor "Snímek obrazovky" "Snímek obrazovky byl uložen"
+fi
+
+# Pokud zavoláme soubor s parametrem -w (window)
+# tak uděláme snímek zvoleného okna nebo výběru
+
+if [ "$1" == "-w" ]; then
+    notify-send -t 2500 "Snímek obrazovky" "Kurzorem vyberte okno pro sejmutí snímku. Nebo držením levého tlačítka myši veberte oblast, ze které se má snímek udělat"
+    scrot -s $soubor -e 'mv $f '$cesta''
+    # odešleme notifikaci
+    notify-send -t 2500 -i $cesta_soubor "Snímek obrazovky" "Snímek obrazovky byl uložen"
+fi
+
+
+
+

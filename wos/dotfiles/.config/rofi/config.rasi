@@ -1,0 +1,5 @@
+configuration {
+    display-drun: "Aplikace";
+}
+@theme "normal.rasi"
+@import "nord.rasi"

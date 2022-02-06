@@ -1,0 +1,37 @@
+/* 
+                     _     ___  ____  
+ __      _____  __ _| | __/ _ \/ ___| 
+ \ \ /\ / / _ \/ _` | |/ / | | \___ \ 
+  \ V  V /  __/ (_| |   <| |_| |___) |
+   \_/\_/ \___|\__,_|_|\_\\___/|____/ 
+                                      
+       	   Nord Color Theme
+            Author: weakCZ
+
+ */
+
+* {
+	background:                      #2e3440;
+	backgroundtransparent:			 #2e3440AA;
+	bordercolor:                     #5e81ac;
+	separatorcolor:                  #2e3440;
+	normal-background:               #2e344090;
+	normal-foreground:               #ffffff;
+	alternate-normal-foreground:     #1a5fb4;
+	selected-normal-background:      #5e81ac;
+	selected-normal-foreground:      #ffffff;
+	active-background:               #1a5fb4;
+	active-foreground:               #ffffff;
+	alternate-active-background:     #5e81ac;
+	selected-active-background:      #268bd2;
+	selected-active-foreground:      #ffffff;
+	urgent-background:               #fdf6e3;
+	urgent-foreground:               #dc322f;
+	alternate-urgent-background:     #eee8d5;
+	selected-urgent-background:      #dc322f;
+	selected-urgent-foreground:      #fdf6e3;
+	alternate-normal-foreground:     @normal-foreground;
+	alternate-urgent-foreground:     @urgent-foreground;
+	alternate-active-foreground:     @active-foreground;
+	foreground:                      @normal-foreground;
+}

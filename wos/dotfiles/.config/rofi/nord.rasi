@@ -1,0 +1,13 @@
+* {
+    width: 30%;
+    bg: #2e3440;
+    fg: #C1C1C1;
+    fg-alt: #FFFFFF;
+    bg-alt: #5E81AC;
+    font: "Cantarel 13";
+    border: 0;
+    margin: 0;
+    padding: 0;
+    spacing: 0;
+    background-color: @bg;
+}
