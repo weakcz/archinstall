@@ -11,14 +11,20 @@ sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 pacman --noconfirm -Sy archlinux-keyring
 loadkeys us
 timedatectl set-ntp true
+clear
 lsblk
+printf "\n\n"
 echo "Zadejte disk [ve formátu /dev/sdX (X je písmeno nebo čísdlo disku)]: "
 read drive
-cfdisk $drive 
+cfdisk $drive
 read -p "Vytvořili jste efi oddíl? [a/n]" answer
+if [[ $answer = a ]] ; then
+  echo "Napište EFI oddíl: "
+  read efipartition
+fi
 echo "Napište oddíl, kam chcete nainstalovat linux: "
 read partition
-echo "Vytvořte uživatele"
+printf "Vytvořte uživatele\n"
 read -p "Jméno: " user_name
 read -s -p "Heslo: " user_password
 printf "\n"
@@ -30,8 +36,6 @@ echo "hostname="$hostname >> wosinstall.conf
 
 mkfs.ext4 $partition 
 if [[ $answer = a ]] ; then
-  echo "Napište EFI oddíl: "
-  read efipartition
   mkfs.vfat -F 32 $efipartition
   echo "efi="$efipartition > wosinstall.conf
 fi
