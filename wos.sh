@@ -13,10 +13,13 @@ loadkeys us
 timedatectl set-ntp true
 clear
 lsblk
-printf "\n\n"
+printf "\n"
 echo "Zadejte disk [ve formátu /dev/sdX (X je písmeno nebo čísdlo disku)]: "
 read drive
 cfdisk $drive
+clear
+lsblk
+printf "\n"
 read -p "Vytvořili jste efi oddíl? [a/n]" answer
 if [[ $answer = a ]] ; then
   echo "Napište EFI oddíl: "
@@ -24,20 +27,20 @@ if [[ $answer = a ]] ; then
 fi
 echo "Napište oddíl, kam chcete nainstalovat linux: "
 read partition
-printf "Vytvořte uživatele\n"
+printf "\nVytvořte uživatele\n"
 read -p "Jméno: " user_name
 read -s -p "Heslo: " user_password
 printf "\n"
-echo "user_name="$user_name >> wosinstall.conf
+echo "user_name="$user_name > wosinstall.conf
 echo "user_password="$user_password >> wosinstall.conf
-echo "Jméno počítače (zadávejte malými písmeny): "
+echo "\nJméno počítače (zadávejte malými písmeny): "
 read hostname
 echo "hostname="$hostname >> wosinstall.conf
 
 mkfs.ext4 $partition 
 if [[ $answer = a ]] ; then
   mkfs.vfat -F 32 $efipartition
-  echo "efi="$efipartition > wosinstall.conf
+  echo "efi="$efipartition >> wosinstall.conf
 fi
 
 mount $partition /mnt 
