@@ -4,7 +4,7 @@ printf '\033c'
 pacman --noconfirm -S terminus-font &>/dev/null
 export LANG=cs_CZ.UTF-8
 setfont ter-v22b
-loadkeys cz
+loadkeys cz-qwertz
 echo "Vítejte v instalačním skriptu pro weakOS"
 reflector -c Czechia --latest 20 --sort rate --save /etc/pacman.d/mirrorlist 
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
@@ -107,6 +107,15 @@ cp -a /wos/dotfiles/. /home/$user_name/
 chown -R weak:weak /home/weak
 # Nastavíme Klávesnici na českou
 localectl set-x11-keymap cz
+
+# Rozbalíme témata a ikony
+echo -e "\nRozbaluji témata do /usr/share/themes. Tohle může chvíli trvat, mějte strpení\n"
+sudo tar -xf /wos/themes/adapta-nord.tar.gz -C /usr/share/themes/
+echo -e "\nRozbaluji iklony do /usr/share/icons. Tohle může chvíli trvat, mějte strpení\n"
+sudo tar -xf /wos/themes/nordarcicons.tar.gz -C /usr/share/icons/
+echo -e "\nRozbaluji kurzor do /usr/share/icons. Tohle může chvíli trvat, mějte strpení\n"
+sudo tar -xf /wos/themes/cursor.tar.gz -C /usr/share/icons/
+
 ai3_path=/home/$user_name/arch_install3.sh
 sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
 chown $user_name:$user_name $ai3_path
