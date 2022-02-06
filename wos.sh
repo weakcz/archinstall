@@ -101,7 +101,6 @@ sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
 chown $user_name:$user_name $ai3_path
 chmod +x $ai3_path
 su -c $ai3_path -s /bin/sh $user_name
-chown -R $user_name:$user_name /home/$user_name
 
 nc=$(grep -c ^processor /proc/cpuinfo)
 sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
@@ -111,6 +110,7 @@ exit
 
 #part3
 printf '\033c'
+chown -R $user_name:$user_name /home/$user_name
 cd ~
 git clone "https://aur.archlinux.org/yay.git"
 cd ${HOME}/yay
