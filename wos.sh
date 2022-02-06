@@ -12,19 +12,12 @@ pacman --noconfirm -Sy archlinux-keyring
 loadkeys us
 timedatectl set-ntp true
 lsblk
-echo "Zadejte disk: "
+echo "Zadejte disk [ve formátu /dev/sdX (X je písmeno nebo čísdlo disku)]: "
 read drive
 cfdisk $drive 
+read -p "Vytvořili jste efi oddíl? [a/n]" answer
 echo "Napište oddíl, kam chcete nainstalovat linux: "
 read partition
-mkfs.ext4 $partition 
-read -p "Vytvořili jste efi oddíl? [a/n]" answer
-if [[ $answer = a ]] ; then
-  echo "Napište EFI oddíl: "
-  read efipartition
-  mkfs.vfat -F 32 $efipartition
-  echo "efi="$efipartition > wosinstall.conf
-fi
 echo "Vytvořte uživatele"
 read -p "Jméno: " user_name
 read -s -p "Heslo: " user_password
@@ -34,6 +27,15 @@ echo "user_password="$user_password >> wosinstall.conf
 echo "Jméno počítače (zadávejte malými písmeny): "
 read hostname
 echo "hostname="$hostname >> wosinstall.conf
+
+mkfs.ext4 $partition 
+if [[ $answer = a ]] ; then
+  echo "Napište EFI oddíl: "
+  read efipartition
+  mkfs.vfat -F 32 $efipartition
+  echo "efi="$efipartition > wosinstall.conf
+fi
+
 mount $partition /mnt 
 pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -64,8 +66,6 @@ echo "LC_NUMERIC=cs_CZ.UTF-8" >> /etc/locale.conf
 echo "LC_PAPER=cs_CZ.UTF-8" >> /etc/locale.conf
 echo "LC_TELEPHONE=cs_CZ.UTF-8" >> /etc/locale.conf
 echo "LC_TIME=cs_CZ.UTF-8" >> /etc/locale.conf
-echo "KEYMAP=cz-qwertz" > /etc/vconsole.conf
-echo "FONT=ter-v22b" >> /etc/vconsole.conf
 echo "QT_QPA_PLATFORMTHEME=qt5ct" >> /etc/environment
 #echo "Jméno počítače: "
 #read hostname
@@ -107,7 +107,10 @@ cp -a /wos/dotfiles/. /home/$user_name/
 chown -R weak:weak /home/weak
 # Nastavíme Klávesnici na českou
 localectl set-x11-keymap cz
+localectl set-keymap cz
 
+echo "KEYMAP=cz-qwertz" > /etc/vconsole.conf
+echo "FONT=ter-v22b" >> /etc/vconsole.conf
 # Rozbalíme témata a ikony
 echo -e "\nRozbaluji témata do /usr/share/themes. Tohle může chvíli trvat, mějte strpení\n"
 sudo tar -xf /wos/themes/adapta-nord.tar.gz -C /usr/share/themes/
@@ -115,7 +118,7 @@ echo -e "\nRozbaluji iklony do /usr/share/icons. Tohle může chvíli trvat, mě
 sudo tar -xf /wos/themes/nordarcicons.tar.gz -C /usr/share/icons/
 echo -e "\nRozbaluji kurzor do /usr/share/icons. Tohle může chvíli trvat, mějte strpení\n"
 sudo tar -xf /wos/themes/cursor.tar.gz -C /usr/share/icons/
-
+cp -r /wos/backgrounds/* /usr/share/wos/backgrounds
 ai3_path=/home/$user_name/arch_install3.sh
 sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
 chown $user_name:$user_name $ai3_path
