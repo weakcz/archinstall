@@ -110,7 +110,7 @@ exit
 
 #part3
 printf '\033c'
-chown -R $user_name:$user_name /home/$user_name
+sudo chown -R $user_name:$user_name /home/$user_name
 cd ~
 git clone "https://aur.archlinux.org/yay.git"
 cd ${HOME}/yay
