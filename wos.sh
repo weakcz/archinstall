@@ -102,6 +102,11 @@ chown $user_name:$user_name $ai3_path
 chmod +x $ai3_path
 su -c $ai3_path -s /bin/sh $user_name
 chown -R $user_name:$user_name /home/$user_name
+
+nc=$(grep -c ^processor /proc/cpuinfo)
+sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
+sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
+sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 exit 
 
 #part3
