@@ -1,12 +1,11 @@
 # == MY ARCH SETUP INSTALLER == #
 #part1
 printf '\033c'
-echo "Vítejte v instalačním skriptu pro weakOS"
 pacman --noconfirm -S terminus-font &>/dev/null
 export LANG=cs_CZ.UTF-8
 setfont ter-v22b
-loadkeys cz-qwertz
-
+loadkeys cz
+echo "Vítejte v instalačním skriptu pro weakOS"
 reflector -c Czechia --latest 20 --sort rate --save /etc/pacman.d/mirrorlist 
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 pacman --noconfirm -Sy archlinux-keyring
@@ -86,7 +85,12 @@ sed -i 's/quiet/pci=noaer/g' /etc/default/grub
 sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
-pacman -S --noconfirm --needed - < test.list
+nc=$(grep -c ^processor /proc/cpuinfo)
+sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
+sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
+sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+
+pacman -Sy --noconfirm --needed - < test.list
 
 systemctl enable NetworkManager.service 
 rm /bin/sh
@@ -94,28 +98,25 @@ ln -s dash /bin/sh
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 # echo "Enter Username: "
 # read username
-useradd -m -G wheel -s /bin/zsh $user_name
+useradd -m -G sys,log,network,floppy,scanner,power,rfkill,users,video,storage,optical,lp,audio,wheel,adm -s /bin/zsh $user_name
 # passwd $username
 echo "$user_name:$user_password" | chpasswd
 echo "root:$user_password" | chpasswd
 cp -a /wos/dotfiles/. /home/$user_name/
-chown $user_name:$user_name /home/$user_name/.zshrc
-
+# chown $user_name:$user_name /home/$user_name/.zshrc
+chown -R weak:weak /home/weak
+# Nastavíme Klávesnici na českou
+localectl set-x11-keymap cz
 ai3_path=/home/$user_name/arch_install3.sh
 sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
 chown $user_name:$user_name $ai3_path
 chmod +x $ai3_path
 su -c $ai3_path -s /bin/sh $user_name
-
-nc=$(grep -c ^processor /proc/cpuinfo)
-sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
-sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
-sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 exit 
 
 #part3
 printf '\033c'
-sudo chown -R weak:weak /home/weak
+# sudo chown -R weak:weak /home/weak
 cd ~
 git clone "https://aur.archlinux.org/yay.git"
 cd ${HOME}/yay
