@@ -82,7 +82,6 @@ useradd -m -G wheel -s /bin/zsh $user_name
 # passwd $username
 echo "$user_name:$user_password" | chpasswd
 echo "root:$user_password" | chpasswd
-xdg-user-dirs-update
 cp -a /wos/dotfiles/. /home/$user_name/
 chown $user_name:$user_name /home/$user_name/.zshrc
 
