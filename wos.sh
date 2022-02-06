@@ -74,17 +74,15 @@ echo "LC_PAPER=cs_CZ.UTF-8" >> /etc/locale.conf
 echo "LC_TELEPHONE=cs_CZ.UTF-8" >> /etc/locale.conf
 echo "LC_TIME=cs_CZ.UTF-8" >> /etc/locale.conf
 echo "QT_QPA_PLATFORMTHEME=qt5ct" >> /etc/environment
-#echo "Jméno počítače: "
-#read hostname
+
 echo $hostname > /etc/hostname
 echo "127.0.0.1       localhost" >> /etc/hosts
 echo "::1             localhost" >> /etc/hosts
 echo "127.0.1.1       $hostname.localdomain $hostname" >> /etc/hosts
 mkinitcpio -P
-# passwd
+
 pacman --noconfirm -S grub efibootmgr os-prober
-#echo "Napište EFI oddíl: " 
-#read efipartition
+
 mkdir /boot/efi
 mount $efi /boot/efi 
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
@@ -113,12 +111,9 @@ cp -a /wos/dotfiles/. /home/$user_name/
 # chown $user_name:$user_name /home/$user_name/.zshrc
 chown -R $user_name:$user_name /home/$user_name
 
-# Nastavíme Klávesnici na českou
-localectl set-x11-keymap cz
-#localectl set-keymap cz
-
 echo "KEYMAP=cz-qwertz" > /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
+
 # Rozbalíme témata a ikony
 echo -e "\nRozbaluji témata do /usr/share/themes. Tohle může chvíli trvat, mějte strpení\n"
 sudo tar -xf /wos/themes/adapta-nord.tar.gz -C /usr/share/themes/
@@ -128,6 +123,22 @@ echo -e "\nRozbaluji kurzor do /usr/share/icons. Tohle může chvíli trvat, mě
 sudo tar -xf /wos/themes/cursor.tar.gz -C /usr/share/icons/
 mkdir -p /usr/share/wos/backgrounds
 cp -r /wos/backgrounds/* /usr/share/wos/backgrounds
+
+# Nastavíme sddm (Login Manažera)
+# =================================================================
+# Smažeme wayland verzi pro qtile abychom se mohli přihlašovat pouze do X11
+sudo rm /usr/share/wayland-sessions/qtile-wayland.desktop
+# Zkopírujeme konfigurační soubor
+sudo cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
+# Nastavíme téma pro sddm
+sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
+# Pokud se jedná o laptop, tak změníme rozlišení obrazovky
+
+# Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
+gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+# Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
+gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+
 ai3_path=/home/$user_name/arch_install3.sh
 sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
 chown $user_name:$user_name $ai3_path
@@ -137,7 +148,6 @@ exit
 
 #part3
 printf '\033c'
-# sudo chown -R weak:weak /home/weak
 cd ~
 git clone "https://aur.archlinux.org/yay.git"
 cd ${HOME}/yay
