@@ -2,7 +2,12 @@
 #part1
 printf '\033c'
 echo "Vítejte v instalačním skriptu pro weakOS"
-reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist --protocol https --download-timeout 5
+pacman --noconfirm -S terminus-font &>/dev/null
+export LANG=cs_CZ.UTF-8
+setfont ter-v22b
+loadkeys cz-qwertz
+
+reflector -c Czechia --latest 20 --sort rate --save /etc/pacman.d/mirrorlist 
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.conf
 pacman --noconfirm -Sy archlinux-keyring
 loadkeys us
@@ -110,7 +115,7 @@ exit
 
 #part3
 printf '\033c'
-sudo chown -R $user_name:$user_name /home/$user_name
+sudo chown -R $user_name:$user_name /home/$user_name/
 cd ~
 git clone "https://aur.archlinux.org/yay.git"
 cd ${HOME}/yay
