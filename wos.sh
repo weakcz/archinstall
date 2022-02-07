@@ -1,7 +1,7 @@
 # == MY ARCH SETUP INSTALLER == #
 #part1
 printf '\033c'
-pacman --noconfirm -S terminus-font &>/dev/null
+pacman --noconfirm -S terminus-font upower &>/dev/null
 export LANG=cs_CZ.UTF-8
 setfont ter-v22b
 loadkeys cz-qwertz
@@ -12,6 +12,16 @@ pacman --noconfirm -Sy archlinux-keyring
 loadkeys us
 timedatectl set-ntp true
 clear
+
+
+# Proměnná na kontrolu přítomnosti baterie
+# battery=$(upower -i $(upower -e | grep BAT))
+
+# Pouze pro testovací účely
+battery="asdfasdfasfdasdf"  
+
+[ -n "$battery" ] && printf "\nJe detekována baterie\n"
+
 lsblk -I 8 -d
 printf "\n"
 echo "Zadejte disk [ve formátu /dev/sdX (X je písmeno nebo čísdlo disku)]: "
@@ -95,7 +105,7 @@ sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
 sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
-pacman -Sy --noconfirm --needed - < test.list
+pacman -Sy --noconfirm --needed - < /wos/lists/test.list
 
 systemctl enable NetworkManager.service 
 rm /bin/sh
