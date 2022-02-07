@@ -162,8 +162,8 @@ cd ..
 
 yay -S --noconfirm oh-my-zsh-git qt5-styleplugins
 
-localectl --no-ask-password set-x11-keymap cz qwertz
-localectl --no-ask-password set-keymap cz-qwertz
+sudo localectl --no-ask-password set-x11-keymap cz qwertz
+sudo localectl --no-ask-password set-keymap cz-qwertz
 
 # Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
