@@ -165,6 +165,14 @@ cd ..
 
 yay -S --noconfirm oh-my-zsh-git qt5-styleplugins
 
+localectl set-x11-keymap cz qwertz
+localectl set-keymap cz-qwertz
+
+# Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
+gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+# Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
+gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+
 sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
 sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
 
