@@ -41,9 +41,9 @@ printf "\nJméno počítače (zadávejte malými písmeny): "
 read hostname
 echo "hostname="$hostname >> wosinstall.conf
 
-mkfs.ext4 $partition -y
+mkfs.ext4 $partition
 if [[ $answer = a ]] ; then
-  mkfs.vfat -F 32 $efipartition -y
+  mkfs.vfat -F 32 $efipartition
   echo "efi="$efipartition >> wosinstall.conf
 fi
 

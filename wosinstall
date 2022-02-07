@@ -94,7 +94,7 @@ pacman -S --noconfirm --needed - < test.list
 systemctl enable NetworkManager.service
 rm /bin/sh
 ln -s dash /bin/sh 
-sed -i 's/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
+sed -i "s/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/" /etc/sudoers
 useradd -m -G wheel -s /bin/zsh $user_name
 echo "$user_name:$user_password" | chpasswd
 echo "root:$user_password" | chpasswd
