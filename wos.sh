@@ -166,14 +166,14 @@ sudo localectl --no-ask-password set-x11-keymap cz qwertz
 sudo localectl --no-ask-password set-keymap cz-qwertz
 
 # Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
-gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+sudo gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 # Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
-gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+sudo gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
 
-ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
-ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
+sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
+sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
 
-sed -i 's/^%wheel ALL=(ALL:ALL) NOPASSWD: ALL/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers
-sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+sudo sed -i 's/^%wheel ALL=(ALL:ALL) NOPASSWD: ALL/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers
+sudo sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"
 exit
