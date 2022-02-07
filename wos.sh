@@ -47,7 +47,7 @@ if [[ $answer = a ]] ; then
   echo "efi="$efipartition >> wosinstall.conf
 fi
 
-[ -n "$battery" ] && echo "battery=yes" >> wosinstall.conf || echo "battery=no"
+[ -n "$battery" ] && echo "battery=yes" >> wosinstall.conf || echo "battery=no" >> wosinstall.conf
 
 mount $partition /mnt 
 pacstrap /mnt base base-devel linux linux-firmware
@@ -143,10 +143,6 @@ cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
 sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 # Pokud se jedná o laptop, tak změníme rozlišení obrazovky
 
-localectl --no-ask-password set-x11-keymap cz qwertz
-localectl --no-ask-password set-keymap cz-qwertz
-
-
 systemctl enable sddm
 
 ai3_path=/home/$user_name/arch_install3.sh
@@ -166,15 +162,18 @@ cd ..
 
 yay -S --noconfirm oh-my-zsh-git qt5-styleplugins
 
+localectl --no-ask-password set-x11-keymap cz qwertz
+localectl --no-ask-password set-keymap cz-qwertz
+
 # Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 # Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
 gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
 
-sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
-sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
+ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
+ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
 
-sudo sed -i 's/^%wheel ALL=(ALL:ALL) NOPASSWD: ALL/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers
-sudo sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
+sed -i 's/^%wheel ALL=(ALL:ALL) NOPASSWD: ALL/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers
+sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"
 exit
