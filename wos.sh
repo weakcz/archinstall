@@ -106,7 +106,7 @@ pacman -Sy --noconfirm --needed - < /wos/lists/test.list
 systemctl enable NetworkManager.service 
 rm /bin/sh
 ln -s dash /bin/sh
-sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
+sed -i 's/^# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
 # echo "Enter Username: "
 # read username
 useradd -m -G sys,log,network,floppy,scanner,power,rfkill,users,video,storage,optical,lp,audio,wheel,adm -s /bin/zsh $user_name
@@ -143,8 +143,8 @@ cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
 sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 # Pokud se jedná o laptop, tak změníme rozlišení obrazovky
 
-localectl set-x11-keymap cz qwertz
-localectl set-keymap cz-qwertz
+localectl --no-ask-password set-x11-keymap cz qwertz
+localectl --no-ask-password set-keymap cz-qwertz
 
 
 systemctl enable sddm
@@ -174,7 +174,7 @@ gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
 sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
 sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
 
-sudo sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
-sudo sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
+sudo sed -i 's/^%wheel ALL=(ALL) NOPASSWD: ALL/# %wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
+sudo sed -i 's/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
 printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"
 exit
