@@ -41,9 +41,9 @@ printf "\nJméno počítače (zadávejte malými písmeny): "
 read hostname
 echo "hostname="$hostname >> wosinstall.conf
 
-mkfs.ext4 $partition 
+mkfs.ext4 $partition -y
 if [[ $answer = a ]] ; then
-  mkfs.vfat -F 32 $efipartition
+  mkfs.vfat -F 32 $efipartition -y
   echo "efi="$efipartition >> wosinstall.conf
 fi
 
@@ -143,7 +143,8 @@ cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
 sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 # Pokud se jedná o laptop, tak změníme rozlišení obrazovky
 
-# Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
+localectl set-x11-keymap cz qwertz
+localectl set-keymap cz-qwertz
 
 
 systemctl enable sddm
@@ -165,9 +166,6 @@ cd ..
 
 yay -S --noconfirm oh-my-zsh-git qt5-styleplugins
 
-localectl set-x11-keymap cz qwertz
-localectl set-keymap cz-qwertz
-
 # Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 # Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
@@ -176,7 +174,7 @@ gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
 sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
 sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
 
-sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
-sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
+sudo sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
+sudo sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
 printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"
 exit
