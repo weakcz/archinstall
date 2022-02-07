@@ -42,6 +42,7 @@ from libqtile import layout, bar, widget, hook
 from libqtile.lazy import lazy
 from typing import List  # noqa: F401
 
+
 # Settings
 # ========
 
@@ -78,7 +79,6 @@ color = [  "#292d3e", # color[0] bar background
 
 # Keyboard shortcuts
 # ==================
-
 keys = [
     # Switch between windows
     Key([mod], "h",
@@ -206,6 +206,17 @@ keys = [
     
 
 ]
+
+mouse = [
+    Drag([mod], "Button1", lazy.window.set_position_floating(),
+         start=lazy.window.get_position()),
+    Drag([mod], "Button3", lazy.window.set_size_floating(),
+         start=lazy.window.get_size()),
+    Click([mod], "Button2", lazy.window.bring_to_front())
+]
+
+
+
 # Groups with matches
 # ===================
 
@@ -397,7 +408,60 @@ screens = [
                     background=widget_dark_background,
                     update_interval=600
                     ),
-               
+                
+                # For laptops
+
+                # Battery widget
+                # ==============
+                #*# separator
+                #*widget.TextBox(
+                #*    text = "",
+                #*    fontsize=21,
+                #*    padding = 0,
+                #*    foreground = widget_light_background,
+                #*    background = widget_dark_background
+                #*    ),
+                #*# widget
+                #*widget.Battery(
+                #*    charge_char = "",
+                #*    discharge_char = "",
+                #*    full_char = "",
+                #*    empty_char = "",
+                #*    format="{char} {percent: 2.0%}",
+                #*    background=widget_light_background,
+                #*    foreground=widget_light_foreground,
+                #*    update_interval=1
+                #*    ),
+                #*
+                #*#separator
+                #*widget.TextBox(
+                #*    text = "",
+                #*    fontsize=21,
+                #*    padding = 0,
+                #*    foreground = widget_dark_background,
+                #*    background = widget_light_background
+                #*    ),
+                #*# Backlight
+                #*# =========
+                #*
+                #*#separator
+                #*widget.TextBox(
+                #*    font="UbuntuMono Nerd Font",
+                #*    text = "",
+                #*    background = widget_dark_background,
+                #*    foreground = widget_dark_foreground
+                #*    ),
+                #*# widget
+                #*widget.Backlight(
+                #*    backlight_name = "intel_backlight",
+                #*    brightness_file= "brightness",
+                #*    max_brightness_file = "max_brightness",
+                #*    change_command = "xbacklight -set {0}",
+                #*    background = widget_dark_background,
+                #*    foreground = widget_dark_foreground
+                #*    ),
+                #*    
+                
                 # Pulseaudio volume widget
                 # ========================
                 
@@ -472,13 +536,7 @@ screens = [
 ]
 
 # Drag floating layouts.
-mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(),
-         start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(),
-         start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front())
-]
+
 
 
 dgroups_key_binder = None

@@ -20,7 +20,7 @@ clear
 # Pouze pro testovací účely
 battery="asdfasdfasfdasdf"  
 
-[ -n "$battery" ] && printf "\nJe detekována baterie\n"
+
 
 lsblk -I 8 -d
 printf "\n"
@@ -53,12 +53,14 @@ if [[ $answer = a ]] ; then
   echo "efi="$efipartition >> wosinstall.conf
 fi
 
+[ -n "$battery" ] && echo "battery=yes" >> wosinstall.conf || echo "battery=no"
+
 mount $partition /mnt 
 pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 sed '1,/^#part2$/d' `basename $0` > /mnt/arch_install2.sh
 chmod +x /mnt/arch_install2.sh
-cp /root/archinstall/test.list /mnt
+# cp /root/archinstall/test.list /mnt
 cp /root/archinstall/wosinstall.conf /mnt
 cp -r /root/archinstall/wos /mnt/wos
 arch-chroot /mnt ./arch_install2.sh
@@ -120,6 +122,8 @@ echo "root:$user_password" | chpasswd
 cp -a /wos/dotfiles/. /home/$user_name/
 # chown $user_name:$user_name /home/$user_name/.zshrc
 chown -R $user_name:$user_name /home/$user_name
+
+[ "$battery" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
 
 echo "KEYMAP=cz-qwertz" > /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
