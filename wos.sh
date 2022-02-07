@@ -106,7 +106,7 @@ pacman -Sy --noconfirm --needed - < /wos/lists/test.list
 systemctl enable NetworkManager.service 
 rm /bin/sh
 ln -s dash /bin/sh
-echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
 # echo "Enter Username: "
 # read username
 useradd -m -G sys,log,network,floppy,scanner,power,rfkill,users,video,storage,optical,lp,audio,wheel,adm -s /bin/zsh $user_name
@@ -146,9 +146,7 @@ sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 # Pokud se jedná o laptop, tak změníme rozlišení obrazovky
 
 # Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
-gsettings set org.gtk.Settings.FileChooser sort-directories-first true
-# Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
-gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+
 
 systemctl enable sddm
 
@@ -167,9 +165,20 @@ cd ${HOME}/yay
 makepkg -si --noconfirm
 cd ..
 
+sudo localectl set-x11-keymap cz qwertz
+sudo localectl set-keymap cz-qwertz
+
+# Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
+gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+# Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
+gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+
 yay -S --noconfirm oh-my-zsh-git qt5-styleplugins
 
 sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
 sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
+
+sudo sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
+sudo sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
 printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"
 exit
