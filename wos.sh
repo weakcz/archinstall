@@ -13,14 +13,8 @@ loadkeys us
 timedatectl set-ntp true
 clear
 
-
 # Proměnná na kontrolu přítomnosti baterie
-# battery=$(upower -i $(upower -e | grep BAT))
-
-# Pouze pro testovací účely
-battery="asdfasdfasfdasdf"  
-
-
+battery=$(upower -i $(upower -e | grep BAT))
 
 lsblk -I 8 -d
 printf "\n"
@@ -32,10 +26,10 @@ lsblk $drive
 printf "\n"
 read -p "Vytvořili jste efi oddíl? [a/n]: " answer
 if [[ $answer = a ]] ; then
-  echo "Napište EFI oddíl (ve formátu /dev/sdXX): "
+  printf "\nNapište EFI oddíl (ve formátu /dev/sdXX): "
   read efipartition
 fi
-echo "Napište oddíl, kam chcete nainstalovat linux (ve formátu /dev/sdXX): "
+printf "\nNapište oddíl, kam chcete nainstalovat linux (ve formátu /dev/sdXX): "
 read partition
 printf "\nVytvořte uživatele\n"
 read -p "Jméno: " user_name
@@ -125,7 +119,8 @@ chown -R $user_name:$user_name /home/$user_name
 
 [ "$battery" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
 
-echo "KEYMAP=cz-qwertz" > /etc/vconsole.conf
+localectl set-x11-keymap cz
+localectl set-keymap cz-qwertz
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
 
 # Rozbalíme témata a ikony
@@ -141,9 +136,11 @@ cp -r /wos/backgrounds/* /usr/share/wos/backgrounds
 # Nastavíme sddm (Login Manažera)
 # =================================================================
 # Smažeme wayland verzi pro qtile abychom se mohli přihlašovat pouze do X11
-sudo rm /usr/share/wayland-sessions/qtile-wayland.desktop
+rm /usr/share/wayland-sessions/qtile-wayland.desktop
 # Zkopírujeme konfigurační soubor
-sudo cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
+
+mkdir -p /etc/sddm.conf.d
+cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
 # Nastavíme téma pro sddm
 sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 # Pokud se jedná o laptop, tak změníme rozlišení obrazovky
@@ -152,6 +149,8 @@ sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 # Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
 gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+
+systemctl enable sddm
 
 ai3_path=/home/$user_name/arch_install3.sh
 sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
