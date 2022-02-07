@@ -119,8 +119,6 @@ chown -R $user_name:$user_name /home/$user_name
 
 [ "$battery" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
 
-localectl set-x11-keymap cz
-localectl set-keymap cz-qwertz
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
 
 # Rozbalíme témata a ikony
@@ -165,20 +163,12 @@ cd ${HOME}/yay
 makepkg -si --noconfirm
 cd ..
 
-sudo localectl set-x11-keymap cz qwertz
-sudo localectl set-keymap cz-qwertz
-
-# Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
-gsettings set org.gtk.Settings.FileChooser sort-directories-first true
-# Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
-gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
-
 yay -S --noconfirm oh-my-zsh-git qt5-styleplugins
 
 sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
 sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
 
-sudo sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
-sudo sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
+sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
+sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
 printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"
 exit
