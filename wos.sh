@@ -166,9 +166,9 @@ sudo localectl --no-ask-password set-x11-keymap cz qwertz
 sudo localectl --no-ask-password set-keymap cz-qwertz
 
 # Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
-sudo dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 # Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
-sudo dbus-launch --exit-with-session gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+dbus-launch --exit-with-session gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
 
 sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
 sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 

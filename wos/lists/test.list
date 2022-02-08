@@ -20,3 +20,5 @@ lxappearance
 rofi
 nitrogen
 qt5ct
+libxkbcommon
+libxkbcommon-x11
