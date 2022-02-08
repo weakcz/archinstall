@@ -172,6 +172,13 @@ exit
 
 #part3
 printf '\033c'
+
+# Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
+sudo dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+# Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
+sudo dbus-launch --exit-with-session gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+sleep 5
+
 cd ~
 git clone "https://aur.archlinux.org/yay.git"
 cd ${HOME}/yay
