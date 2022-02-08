@@ -144,6 +144,16 @@ sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 # Pokud se jedná o laptop, tak změníme rozlišení obrazovky
 
 systemctl enable sddm
+clear
+printf "Gsettings"
+sleep5
+# Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
+dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+# Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
+dbus-launch --exit-with-session gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+sleep 5
+dbus-launch localectl --no-ask-password --no-convert set-x11-keymap cz qwertz
+dbus-launch localectl --no-ask-password --no-convert set-keymap cz-qwertz
 
 ai3_path=/home/$user_name/arch_install3.sh
 sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
@@ -161,14 +171,6 @@ makepkg -si --noconfirm
 cd ..
 
 yay -S --noconfirm oh-my-zsh-git qt5-styleplugins
-
-sudo localectl --no-ask-password set-x11-keymap cz qwertz
-sudo localectl --no-ask-password set-keymap cz-qwertz
-
-# Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
-dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser sort-directories-first true
-# Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
-dbus-launch --exit-with-session gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
 
 sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
 sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
