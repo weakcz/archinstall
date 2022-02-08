@@ -119,6 +119,7 @@ chown -R $user_name:$user_name /home/$user_name
 
 [ "$battery" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
 
+echo "KEYMAP=cz-qwertz"
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
 
 # Rozbalíme témata a ikony
@@ -146,14 +147,21 @@ sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 systemctl enable sddm
 clear
 printf "Gsettings"
-sleep5
+sleep 5
 # Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
 dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 # Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
 dbus-launch --exit-with-session gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
 sleep 5
-dbus-launch localectl --no-ask-password --no-convert set-x11-keymap cz qwertz
-dbus-launch localectl --no-ask-password --no-convert set-keymap cz-qwertz
+
+echo "Section \"InputClass\"" >> /etc/X11/xorg.conf.d/00-keyboard.conf
+echo "        Identifier \"system-keyboard\"" >> /etc/X11/xorg.conf.d/00-keyboard.conf
+echo "        MatchIsKeyboard \"on\"" >> /etc/X11/xorg.conf.d/00-keyboard.conf
+echo "        Option \"XkbLayout\" \"cz\"" >> /etc/X11/xorg.conf.d/00-keyboard.conf
+echo "        Option \"XkbModel\" \"pc104\"" >> /etc/X11/xorg.conf.d/00-keyboard.conf
+echo "        Option \"XkbVariant\" \",qwertz\"" >> /etc/X11/xorg.conf.d/00-keyboard.conf
+echo "        Option \"XkbOptions\" \"grp:win_space_toggle\"" >> /etc/X11/xorg.conf.d/00-keyboard.conf
+echo "EndSection" >> /etc/X11/xorg.conf.d/00-keyboard.conf
 
 ai3_path=/home/$user_name/arch_install3.sh
 sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
