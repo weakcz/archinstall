@@ -119,7 +119,7 @@ chown -R $user_name:$user_name /home/$user_name
 
 [ "$battery" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
 
-echo "KEYMAP=cz-qwertz"
+echo "KEYMAP=cz-qwertz" >> /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
 
 # Rozbalíme témata a ikony
