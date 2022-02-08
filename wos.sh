@@ -149,9 +149,9 @@ clear
 printf "Gsettings"
 sleep 5
 # Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
-dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+sudo -u weak dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 # Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
-dbus-launch --exit-with-session gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+sudo -u weak dbus-launch --exit-with-session gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
 sleep 5
 
 echo "Section \"InputClass\"" >> /etc/X11/xorg.conf.d/00-keyboard.conf
@@ -174,9 +174,9 @@ exit
 printf '\033c'
 
 # Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
-sudo dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+#sudo -u dbus-launch --exit-with-session gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 # Nastavíme aby nemo (správce souborů) používal alacritty jako terminál
-sudo dbus-launch --exit-with-session gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+#sudo dbus-launch --exit-with-session gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
 sleep 5
 
 cd ~
