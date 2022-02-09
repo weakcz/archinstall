@@ -189,9 +189,16 @@ yay -S --noconfirm oh-my-zsh-git qt5-styleplugins
 
 sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
 sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
+# Uklidíme po sobě
+rm -rf /wos
+rm /wosinstall.conf
+rm /arch_install2.sh
+
 
 sudo sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 sudo sed -i 's/^%wheel ALL=(ALL:ALL) NOPASSWD: ALL/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers
 
 printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"
+# Uklidíme po sobě
+rm ~/arch_install3.sh
 exit
