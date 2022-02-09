@@ -193,6 +193,7 @@ sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custo
 sudo rm -rf /wos
 sudo rm -f /wosinstall.conf
 sudo rm -f /arch_install2.sh
+sudo rm -rf ~/yay
 
 
 sudo sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
@@ -200,5 +201,5 @@ sudo sed -i 's/^%wheel ALL=(ALL:ALL) NOPASSWD: ALL/# %wheel ALL=(ALL:ALL) NOPASS
 
 printf "\nInstalace weakOSu hotová. Můžete restartovat počítač.\n"
 # Uklidíme po sobě
-rm f- ~/arch_install3.sh
+rm -f ~/arch_install3.sh
 exit
