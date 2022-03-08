@@ -1,7 +1,7 @@
 # == MY ARCH SETUP INSTALLER == #
 #part1
 printf '\033c'
-pacman --noconfirm -S terminus-font upower lib32-glibc &>/dev/null
+pacman --noconfirm -S terminus-font &>/dev/null
 export LANG=cs_CZ.UTF-8
 setfont ter-v22b
 loadkeys cz-qwertz
@@ -14,10 +14,9 @@ loadkeys us
 timedatectl set-ntp true
 clear
 
-# Proměnná na kontrolu přítomnosti baterie
-battery=$(upower -i $(upower -e | grep BAT))
 
-lsblk -I 8 -d
+
+lsblk
 printf "\n"
 echo "Zadejte disk [ve formátu /dev/sdX (X je písmeno nebo čísdlo disku)]: "
 read drive
@@ -47,8 +46,6 @@ if [[ $answer = a ]] ; then
   mkfs.vfat -F 32 $efipartition
   echo "efi="$efipartition >> wosinstall.conf
 fi
-
-[ -n "$battery" ] && echo "battery=yes" >> wosinstall.conf || echo "battery=no" >> wosinstall.conf
 
 mount $partition /mnt 
 pacstrap /mnt base base-devel linux linux-firmware
@@ -103,6 +100,9 @@ sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Sy --noconfirm --needed - < /wos/lists/pacman.list
+# Proměnná na kontrolu přítomnosti baterie
+battery=$(upower -i $(upower -e | grep BAT))
+[ -n "$battery" ] && batt=yes || batt=no
 
 systemctl enable NetworkManager.service 
 rm /bin/sh
@@ -118,7 +118,7 @@ cp -a /wos/dotfiles/. /home/$user_name/
 # chown $user_name:$user_name /home/$user_name/.zshrc
 chown -R $user_name:$user_name /home/$user_name
 
-[ "$battery" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
+[ "$batt" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
 
 echo "KEYMAP=cz-qwertz" >> /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
