@@ -119,7 +119,7 @@ cp -a /wos/dotfiles/. /home/$user_name/
 # chown $user_name:$user_name /home/$user_name/.zshrc
 chown -R $user_name:$user_name /home/$user_name
 
-if [ "$batt" == "yes" ] then
+if [ "$batt" == "yes" ]; then
   echo "Detekována Baterie. Instaluji programy, služby a nastavení pro úsporu baterie"
   sleep 5 
 fi
