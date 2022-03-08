@@ -1,7 +1,7 @@
 # == MY ARCH SETUP INSTALLER == #
 #part1
 printf '\033c'
-pacman --noconfirm -S terminus-font upower &>/dev/null
+pacman --noconfirm -S terminus-font upower lib32-glibc &>/dev/null
 export LANG=cs_CZ.UTF-8
 setfont ter-v22b
 loadkeys cz-qwertz
