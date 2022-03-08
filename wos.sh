@@ -102,8 +102,8 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Sy --noconfirm --needed - < /wos/lists/test.list
 # Proměnná na kontrolu přítomnosti baterie
 battery=$(upower -i $(upower -e | grep BAT))
-#[ -n "$battery" ] && batt=yes || batt=no
-batt=yes
+[ -n "$battery" ] && batt=yes || batt=no
+
 
 systemctl enable NetworkManager.service 
 rm /bin/sh
@@ -122,7 +122,7 @@ chown -R $user_name:$user_name /home/$user_name
 if [ "$batt" == "yes" ]; then
   sleep 5
   echo "Detekována Baterie. Instaluji programy, služby a nastavení pro úsporu baterie"
-  pacman -S tlp
+  pacman -S --noconfirm tlp
   systemctl enable tlp.service 
   sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
   sleep 5
@@ -135,17 +135,17 @@ echo "FONT=ter-v22b" >> /etc/vconsole.conf
 
 # Grafika
 
-printf "\nInstaluji Grafické ovladače\n"
+printf "\n\nInstaluji Grafické ovladače\n\n"
 sleep 5
-gpu_type=$(lspci)
-if grep -E "NVIDIA|GeForce" <<< ${gpu_type}; then
+
+if lspcie | grep -E "NVIDIA|GeForce";then
     pacman -S --noconfirm --needed nvidia
 	nvidia-xconfig
-elif lspci | grep 'VGA' | grep -E "Radeon|AMD"; then
+elif lspci | grep 'VGA' | grep -E "Radeon|AMD";then
     pacman -S --noconfirm --needed xf86-video-amdgpu
-elif lspci | grep 'VGA' | grep -E "Integrated Graphics Controller" <<< ${gpu_type}; then
+elif lspci | grep 'VGA' | grep -E "Integrated Graphics Controller";then
     pacman -S --noconfirm --needed libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa
-elif lspci | grep 'VGA' | grep -E "Intel Corporation" <<< ${gpu_type}; then
+elif lspci | grep 'VGA' | grep -E "Intel Corporation";then
     pacman -S --needed --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa
 fi
 sleep 5
