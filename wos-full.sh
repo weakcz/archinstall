@@ -102,7 +102,7 @@ sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
 sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
-pacman -Sy --noconfirm --needed - < /wos/lists/test.list
+pacman -Sy --noconfirm --needed - < /wos/lists/pacman.list
 
 systemctl enable NetworkManager.service 
 rm /bin/sh
@@ -126,7 +126,7 @@ echo "FONT=ter-v22b" >> /etc/vconsole.conf
 # Grafika
 
 printf "\nInstaluji Grafické ovladače\n"
-
+sleep 5
 gpu_type=$(lspci)
 if grep -E "NVIDIA|GeForce" <<< ${gpu_type}; then
     pacman -S --noconfirm --needed nvidia
