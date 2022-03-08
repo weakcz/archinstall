@@ -1,7 +1,7 @@
 # == MY ARCH SETUP INSTALLER == #
 #part1
 printf '\033c'
-pacman --noconfirm -S terminus-font upower &>/dev/null
+pacman --noconfirm -S terminus-font &>/dev/null
 export LANG=cs_CZ.UTF-8
 setfont ter-v22b
 loadkeys cz-qwertz
@@ -14,10 +14,9 @@ loadkeys us
 timedatectl set-ntp true
 clear
 
-# Proměnná na kontrolu přítomnosti baterie
-battery=$(upower -i $(upower -e | grep BAT))
 
-lsblk -I 8 -d
+
+lsblk
 printf "\n"
 echo "Zadejte disk [ve formátu /dev/sdX (X je písmeno nebo čísdlo disku)]: "
 read drive
@@ -47,8 +46,6 @@ if [[ $answer = a ]] ; then
   mkfs.vfat -F 32 $efipartition
   echo "efi="$efipartition >> wosinstall.conf
 fi
-
-[ -n "$battery" ] && echo "battery=yes" >> wosinstall.conf || echo "battery=no" >> wosinstall.conf
 
 mount $partition /mnt 
 pacstrap /mnt base base-devel linux linux-firmware
@@ -103,6 +100,10 @@ sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Sy --noconfirm --needed - < /wos/lists/test.list
+# Proměnná na kontrolu přítomnosti baterie
+battery=$(upower -i $(upower -e | grep BAT))
+#[ -n "$battery" ] && batt=yes || batt=no
+batt=yes
 
 systemctl enable NetworkManager.service 
 rm /bin/sh
@@ -118,7 +119,12 @@ cp -a /wos/dotfiles/. /home/$user_name/
 # chown $user_name:$user_name /home/$user_name/.zshrc
 chown -R $user_name:$user_name /home/$user_name
 
-[ "$battery" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
+if [ "$batt" == "yes" ] then
+  echo "Detekována Baterie. Instaluji programy, služby a nastavení pro úsporu baterie"
+  sleep 5 
+fi
+
+[ "$batt" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
 
 echo "KEYMAP=cz-qwertz" >> /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
@@ -126,19 +132,19 @@ echo "FONT=ter-v22b" >> /etc/vconsole.conf
 # Grafika
 
 printf "\nInstaluji Grafické ovladače\n"
-
+sleep 5
 gpu_type=$(lspci)
 if grep -E "NVIDIA|GeForce" <<< ${gpu_type}; then
     pacman -S --noconfirm --needed nvidia
 	nvidia-xconfig
 elif lspci | grep 'VGA' | grep -E "Radeon|AMD"; then
     pacman -S --noconfirm --needed xf86-video-amdgpu
-elif grep -E "Integrated Graphics Controller" <<< ${gpu_type}; then
+elif lspci | grep 'VGA' | grep -E "Integrated Graphics Controller" <<< ${gpu_type}; then
     pacman -S --noconfirm --needed libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa
-elif grep -E "Intel Corporation" <<< ${gpu_type}; then
+elif lspci | grep 'VGA' | grep -E "Intel Corporation" <<< ${gpu_type}; then
     pacman -S --needed --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa
 fi
-
+sleep 5
 # Rozbalíme témata a ikony
 echo -e "\nRozbaluji témata do /usr/share/themes. Tohle může chvíli trvat, mějte strpení\n"
 sudo tar -xf /wos/themes/adapta-nord.tar.gz -C /usr/share/themes/

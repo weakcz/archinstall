@@ -138,7 +138,7 @@ elif lspci | grep 'VGA' | grep -E "Integrated Graphics Controller" <<< ${gpu_typ
 elif lspci | grep 'VGA' | grep -E "Intel Corporation" <<< ${gpu_type}; then
     pacman -S --needed --noconfirm libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa
 fi
-
+sleep 5
 # Rozbalíme témata a ikony
 echo -e "\nRozbaluji témata do /usr/share/themes. Tohle může chvíli trvat, mějte strpení\n"
 sudo tar -xf /wos/themes/adapta-nord.tar.gz -C /usr/share/themes/
