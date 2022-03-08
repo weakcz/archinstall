@@ -120,11 +120,15 @@ cp -a /wos/dotfiles/. /home/$user_name/
 chown -R $user_name:$user_name /home/$user_name
 
 if [ "$batt" == "yes" ]; then
+  sleep 5
   echo "Detekována Baterie. Instaluji programy, služby a nastavení pro úsporu baterie"
-  sleep 5 
+  pacman -S tlp
+  systemctl enable tlp.service 
+  sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
+  sleep 5
 fi
 
-[ "$batt" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
+#[ "$batt" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
 
 echo "KEYMAP=cz-qwertz" >> /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
