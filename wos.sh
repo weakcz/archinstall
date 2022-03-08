@@ -138,7 +138,7 @@ echo "FONT=ter-v22b" >> /etc/vconsole.conf
 printf "\n\nInstaluji Grafické ovladače\n\n"
 sleep 5
 
-if lspcie | grep -E "NVIDIA|GeForce";then
+if lspci | grep -E "NVIDIA|GeForce";then
     pacman -S --noconfirm --needed nvidia
 	nvidia-xconfig
 elif lspci | grep 'VGA' | grep -E "Radeon|AMD";then
