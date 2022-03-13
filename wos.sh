@@ -125,7 +125,7 @@ if [ "$batt" == "yes" ]; then
   pacman -S --noconfirm tlp
   systemctl enable tlp.service 
   sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
-  echo "xrandr -s 1600x900" > usr/share/sddm/scripts/Xsetup
+  echo "xrandr -s 1600x900" > /usr/share/sddm/scripts/Xsetup
   sleep 5
 fi
 
