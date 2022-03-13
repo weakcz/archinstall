@@ -101,7 +101,7 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Sy --noconfirm --needed - < /wos/lists/test.list
 # Proměnná na kontrolu přítomnosti baterie
-battery=$(upower -i $(upower -e | grep BAT))
+battery=$(upower -e | grep BAT)
 [ -n "$battery" ] && batt=yes || batt=no
 
 
@@ -118,9 +118,10 @@ echo "root:$user_password" | chpasswd
 cp -a /wos/dotfiles/. /home/$user_name/
 # chown $user_name:$user_name /home/$user_name/.zshrc
 chown -R $user_name:$user_name /home/$user_name
-
+sleep 10
+echo "Baterie: $batt"
+sleep
 if [ "$batt" == "yes" ]; then
-  sleep 5
   echo "Detekována Baterie. Instaluji programy, služby a nastavení pro úsporu baterie"
   pacman -S --noconfirm tlp
   systemctl enable tlp.service 
