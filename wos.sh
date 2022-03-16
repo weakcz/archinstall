@@ -101,10 +101,8 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Sy --noconfirm --needed - < /wos/lists/test.list
 # Proměnná na kontrolu přítomnosti baterie
-battery=$(upower -e | grep BAT)
-echo $battery
-read -r -s -p $"Enter pro pokračování\n"
-if [ -n "$battery" ]; then
+
+if [ -d "/proc/acpi/button/lid" ]; then
   echo "Detekována Baterie. Instaluji programy, služby a nastavení pro úsporu baterie"
   read -r -s -p $"Enter pro pokračování\n"
   pacman -S --noconfirm tlp
