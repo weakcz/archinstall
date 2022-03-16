@@ -102,7 +102,17 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Sy --noconfirm --needed - < /wos/lists/test.list
 # Proměnná na kontrolu přítomnosti baterie
 battery=$(upower -e | grep BAT)
-[ -n "$battery" ] && batt=yes || batt=no
+echo $battery
+read -r -s -p $"Enter pro pokračování\n"
+if [ -n "$battery" ]; then
+  echo "Detekována Baterie. Instaluji programy, služby a nastavení pro úsporu baterie"
+  read -r -s -p $"Enter pro pokračování\n"
+  pacman -S --noconfirm tlp
+  systemctl enable tlp.service 
+  sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
+  echo "xrandr -s 1600x900" > /usr/share/sddm/scripts/Xsetup
+fi
+read -r -s -p $"Enter pro pokračování\n"
 
 
 systemctl enable NetworkManager.service 
@@ -118,17 +128,6 @@ echo "root:$user_password" | chpasswd
 cp -a /wos/dotfiles/. /home/$user_name/
 # chown $user_name:$user_name /home/$user_name/.zshrc
 chown -R $user_name:$user_name /home/$user_name
-sleep 10
-echo "Baterie: $batt"
-sleep
-if [ "$batt" == "yes" ]; then
-  echo "Detekována Baterie. Instaluji programy, služby a nastavení pro úsporu baterie"
-  pacman -S --noconfirm tlp
-  systemctl enable tlp.service 
-  sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
-  echo "xrandr -s 1600x900" > /usr/share/sddm/scripts/Xsetup
-  sleep 5
-fi
 
 #[ "$batt" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
 
