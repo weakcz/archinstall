@@ -100,18 +100,6 @@ sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Sy --noconfirm --needed - < /wos/lists/test.list
-# Proměnná na kontrolu přítomnosti baterie
-
-if [ -d "/proc/acpi/button/lid" ]; then
-  echo "Detekována Baterie. Instaluji programy, služby a nastavení pro úsporu baterie"
-  read -r -s -p $"Enter pro pokračování\n"
-  pacman -S --noconfirm tlp
-  systemctl enable tlp.service 
-  sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
-  echo "xrandr -s 1600x900" > /usr/share/sddm/scripts/Xsetup
-fi
-read -r -s -p $"Enter pro pokračování\n"
-
 
 systemctl enable NetworkManager.service 
 rm /bin/sh
@@ -127,7 +115,16 @@ cp -a /wos/dotfiles/. /home/$user_name/
 # chown $user_name:$user_name /home/$user_name/.zshrc
 chown -R $user_name:$user_name /home/$user_name
 
-#[ "$batt" == "yes" ] && sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
+# Pokud se instaluje na laptop, tak nainstalujeme další programy
+if [ -d "/proc/acpi/button/lid" ]; then
+  echo "Detekována Baterie. Instaluji programy, služby a nastavení pro úsporu baterie"
+  read -r -s -p $"Enter pro pokračování\n"
+  pacman -S --noconfirm tlp
+  systemctl enable tlp.service 
+  sed -i 's/\#\*//g' /home/$user_name/.config/qtile/config.py
+  echo "xrandr -s 1600x900" > /usr/share/sddm/scripts/Xsetup
+fi
+read -r -s -p $"Enter pro pokračování\n"
 
 echo "KEYMAP=cz-qwertz" >> /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
