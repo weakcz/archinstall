@@ -197,7 +197,7 @@ cd ${HOME}/yay
 makepkg -si --noconfirm
 cd ..
 
-yay -S --noconfirm oh-my-zsh-git qt5-styleplugins
+yay -S --noconfirm oh-my-zsh-git qt5-styleplugins ttf-mononoki otf-raleway ttf-ms-fonts
 
 sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
 sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
